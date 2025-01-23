@@ -60,3 +60,7 @@ tests/unit/saved_checkpoint/
 *.hip
 *.cuh
 *hip_layers.h
+.vscode
+output/
+models-files/
+deepspeed.egg-info/

@@ -322,8 +322,7 @@ setup(name='deepspeed',
       scripts=scripts,
       classifiers=[
           'Programming Language :: Python :: 3.8', 'Programming Language :: Python :: 3.9',
-          'Programming Language :: Python :: 3.10', 'Programming Language :: Python :: 3.11',
-          'Programming Language :: Python :: 3.12'
+          'Programming Language :: Python :: 3.10', 'Programming Language :: Python :: 3.11', 'Programming Language :: Python :: 3.12'
       ],
       license='Apache Software License 2.0',
       ext_modules=ext_modules,

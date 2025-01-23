@@ -24,13 +24,24 @@ from typing import Tuple, List, Dict
 from collections import defaultdict
 import shlex
 
-from .multinode_runner import PDSHRunner, OpenMPIRunner, MVAPICHRunner, SlurmRunner, MPICHRunner, IMPIRunner
-from .constants import PDSH_LAUNCHER, OPENMPI_LAUNCHER, MVAPICH_LAUNCHER, SLURM_LAUNCHER, MPICH_LAUNCHER, IMPI_LAUNCHER
-from ..constants import TORCH_DISTRIBUTED_DEFAULT_PORT
-from ..nebula.constants import NEBULA_EXPORT_ENVS
-from ..utils import logger
+from deepspeed.launcher.multinode_runner import PDSHRunner, OpenMPIRunner, MVAPICHRunner, SlurmRunner, MPICHRunner, IMPIRunner
+# from .multinode_runner import PDSHRunner, OpenMPIRunner, MVAPICHRunner, SlurmRunner, MPICHRunner, IMPIRunner
 
-from ..autotuning import Autotuner
+from deepspeed.launcher.constants import PDSH_LAUNCHER, OPENMPI_LAUNCHER, MVAPICH_LAUNCHER, SLURM_LAUNCHER, MPICH_LAUNCHER, IMPI_LAUNCHER
+# from .constants import PDSH_LAUNCHER, OPENMPI_LAUNCHER, MVAPICH_LAUNCHER, SLURM_LAUNCHER, MPICH_LAUNCHER, IMPI_LAUNCHER
+
+# from ..constants import TORCH_DISTRIBUTED_DEFAULT_PORT
+from deepspeed.constants import TORCH_DISTRIBUTED_DEFAULT_PORT
+
+# from ..nebula.constants import NEBULA_EXPORT_ENVS
+from deepspeed.nebula.constants import NEBULA_EXPORT_ENVS
+
+# from ..utils import logger
+from deepspeed.utils import logger
+
+# from ..autotuning import Autotuner
+from deepspeed.autotuning import Autotuner
+
 from deepspeed.accelerator import get_accelerator
 
 DLTS_HOSTFILE = "/job/hostfile"
@@ -46,8 +57,7 @@ EXCLUDE_ENVS = {'AISC_JOB_NAME': ['NCCL_IB_HCA', 'UCX_NET_DEVICES']}
 
 
 def parse_args(args=None):
-    parser = argparse.ArgumentParser(description="DeepSpeed runner to help launch distributed "
-                                     "multi-node/multi-gpu training jobs.",
+    parser = argparse.ArgumentParser(description="DeepSpeed runner to help launch distributed multi-node/multi-gpu training jobs.",
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("-H",
@@ -189,8 +199,7 @@ def parse_args(args=None):
                         action="store_true",
                         help="Enable elastic training support in DeepSpeed.")
 
-    parser.add_argument("user_script", type=str, help="User script to launch, followed by any required "
-                        "arguments.")
+    parser.add_argument("user_script", type=str, help="User script to launch, followed by any required arguments.")
 
     parser.add_argument('user_args', nargs=argparse.REMAINDER)
 
@@ -517,8 +526,7 @@ def main(args=None):
         assert not args.no_local_rank, "--no_local_rank argument is not supported in Elastic training"
 
     if args.no_ssh:
-        assert (0 <= args.node_rank <
-                len(active_resources)), "Launching training without ssh, but --node_rank is not set correctly."
+        assert (0 <= args.node_rank < len(active_resources)), "Launching training without ssh, but --node_rank is not set correctly."
 
     # encode world info as base64 to make it easier to pass via command line
     world_info_base64 = encode_world_info(active_resources)
